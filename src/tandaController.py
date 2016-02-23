@@ -19,11 +19,14 @@ class tandaController:
                 con.close()
                 return True
 
-    def recuperarTandas(self):
+    def recuperarTandas(self, idTandas):
         try:
             con = lite.connect(self._db)
             cur = con.cursos()
-            cur.execute('SELECT * FROM Tandas')
+            if not(idTandas is None):
+                cur.execute('SELECT * FROM Tandas WHERE idTandas = ?', (idTandas))
+            else:
+                cur.execute('SELECT * FROM Tandas')
             rows = cur.fetchall()
         except Exception as e:
             print "Error %s:" % e.args[0]
@@ -47,11 +50,15 @@ class tandaController:
                 con.close()
                 return True
 
-    def recuperarIntegrantes(self):
+    def recuperarIntegrantes(self, idIntegrante = None):
         try:
             con = lite.connect(self._db)
             cur = con.cursor()
-            cur.execute('SELECT * FROM Integrantes')
+
+            if idIntegrante is None:
+                cur.execute('SELECT * FROM Integrantes')
+            else:
+                cur.execute('SELECT * FROM Integrantes WHERE idIntegrante = ?', (idIntegrante))
             rows = cur.fetchall()
         except lite.Error, e:
             print "Error %s:" % e.args[0]
@@ -89,11 +96,18 @@ class tandaController:
                 con.close()
                 return True
 
-    def recuperarPagos(self):
+    def recuperarPagos(self, idTandas = None, idIntegrante = None):
         try:
             con = lite.connect(self._db)
             cur = con.cursor()
-            cur.execute('SELECT * FROM Pagos')
+            if not(idTandas is None and idIntegrante is None):
+                cur.execute('SELECT * FROM Pagos WHERE idTandas = ? and idIntegrante = ?', (idTandas, idIntegrante))
+            elif not(idTandas is None):
+                cur.execute('SELECT * FROM Pagos WHERE idTandas = ?', (idTandas))
+            elif not(idIntegrante is None):
+                cur.execute('SELECT * FROM Pagos WHERE idIntegrante = ?', (idIntegrante))
+            else:
+                cur.execute('SELECT * FROM Pagos')
             rows = cur.fetchall()
         except lite.Error, e:
             print "Error %s:" % e.args[0]
