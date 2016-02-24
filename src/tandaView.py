@@ -48,7 +48,10 @@ class IntegranteView:
 
         self._integrante = Tkinter.Toplevel(master)
         self._integrante.title("Integrantes")
-        self.limpiarCampos()
+
+        self._nombre = Tkinter.StringVar()
+        self._apellido = Tkinter.StringVar()
+        self._tel = Tkinter.StringVar()
 
         labelNombre = Tkinter.Label(self._integrante, text = 'Nombre')
         entryNombre = Tkinter.Entry(self._integrante, textvariable = self._nombre)
@@ -83,9 +86,9 @@ class IntegranteView:
         self._integrante.destroy()
 
     def limpiarCampos(self):
-        self._nombre = Tkinter.StringVar()
-        self._apellido = Tkinter.StringVar()
-        self._tel = Tkinter.StringVar()
+        self._nombre.set("")
+        self._apellido.set("")
+        self._tel.set("")
 
 top = Tkinter.Tk()
 tandaView(top)
