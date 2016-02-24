@@ -10,12 +10,12 @@ class tandaController:
             con = lite.connect(self._db)
             cur = con.cursor()
             cur.execute('INSERT INTO Tandas(noIntegrantes, fechaInicio, idPer, monto, finalizada) VALUES(?, ?, ?, ?, ?)', (noIntegrantes, fechaInicio, idPeriodo, monto, 0))
+            con.commit()
         except lite.Error, e:
             print "Error %s:" % e.args[0]
             sys.exit(1)
         finally:
             if con:
-                con.commit()
                 con.close()
                 return True
 
@@ -41,12 +41,12 @@ class tandaController:
             con = lite.connect(self._db)
             cur = con.cursor()
             cur.execute('INSERT INTO Integrantes(nombre, apellido, telefono) VALUES(?, ?, ?)', (nombre, apellido, telefono))
+            con.commit()
         except lite.Error, e:
             print "Error %s:" % e.args[0]
             sys.exit(1)
         finally:
             if con:
-                con.commit()
                 con.close()
                 return True
 
@@ -82,32 +82,32 @@ class tandaController:
                 con.close()
                 return rows
 
-    def insertarPago(self, idTandas, idIntegrante, periodo, pagado):
+    def insertarTandaSalida(self, idTandas, idIntegrante, pagado):
         try:
             con = lite.connect(self._db)
             cur = con.cursor()
-            cur.execute('INSERT INTO Pagos(idTandas, idIntegrante, periodo, pagado) VALUES(?, ?, ?, ?)', (idTandas, idIntegrante, periodo, pagado))
+            cur.execute('INSERT INTO Pagos(idTandas, idIntegrante, pagado) VALUES(?, ?, ?)', (idTandas, idIntegrante, pagado))
+            con.commit()
         except lite.Error, e:
             print "Error %s:" % e.args[0]
             sys.exit(1)
         finally:
             if con:
-                con.commit()
                 con.close()
                 return True
 
-    def recuperarPagos(self, idTandas = None, idIntegrante = None):
+    def recuperarTandaSalida(self, idTandas = None, idIntegrante = None):
         try:
             con = lite.connect(self._db)
             cur = con.cursor()
             if not(idTandas is None and idIntegrante is None):
-                cur.execute('SELECT * FROM Pagos WHERE idTandas = ? and idIntegrante = ?', (idTandas, idIntegrante))
+                cur.execute('SELECT * FROM TandaSalida WHERE idTandas = ? and idIntegrante = ?', (idTandas, idIntegrante))
             elif not(idTandas is None):
-                cur.execute('SELECT * FROM Pagos WHERE idTandas = ?', (idTandas))
+                cur.execute('SELECT * FROM TandaSalida WHERE idTandas = ?', (idTandas))
             elif not(idIntegrante is None):
-                cur.execute('SELECT * FROM Pagos WHERE idIntegrante = ?', (idIntegrante))
+                cur.execute('SELECT * FROM TandaSalida WHERE idIntegrante = ?', (idIntegrante))
             else:
-                cur.execute('SELECT * FROM Pagos')
+                cur.execute('SELECT * FROM TandaSalida')
             rows = cur.fetchall()
         except lite.Error, e:
             print "Error %s:" % e.args[0]
@@ -116,6 +116,25 @@ class tandaController:
             if con:
                 con.close()
                 return rows
+
+    def recuperarTandaEntrada(self, idTandas, idIntegrante = None):
+        try:
+            con = lite.connect(self._db)
+            cur = con.cursor()
+            if not(idIntegrante is None):
+                cur.execute('SELECT * FROM TandaEntrada WHERE idTandas = ? and idIntegrante = ? and pagado = ?', (idTandas, idIntegrante, 0))
+            else:
+                cur.execute('SELECT * FROM TandaEntrada WHERE idTandas = ? and pagado = ?', (idTandas, 0))
+            rows = cur.fetchall()
+        except lite.Error, e:
+            print "Error %s:" % e.args[0]
+            sys.exit(1)
+        finally:
+            if con:
+                con.close()
+                return rows
+
+    def insertarTandaEntrada(self, idTandas, idIntegrante):
 
 
 # tanda = tandaController()
