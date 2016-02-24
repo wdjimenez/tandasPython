@@ -1,11 +1,15 @@
+# -*- coding: utf-8 -*- 
 import sqlite3 as lite
 import sys
 
 class tandaController:
+    """Clase para manipular información de los integrantes"""
     def __init__(self, db = 'TandaDB.db'):
+        """Se recibe la BD que se va a utilizar"""
         self._db = db
 
     def crearTanda(self, noIntegrantes, fechaInicio, idPeriodo, monto):
+        """Método para generar una nueva tanda"""
         try:
             con = lite.connect(self._db)
             cur = con.cursor()
@@ -19,7 +23,8 @@ class tandaController:
                 con.close()
                 return True
 
-    def recuperarTandas(self, idTandas):
+    def recuperarTandas(self, idTandas = None):
+        """Método para recuperar información de una tanda o de todas las tandas si no se pasa el parámetro idTandas"""
         try:
             con = lite.connect(self._db)
             cur = con.cursos()
@@ -37,6 +42,7 @@ class tandaController:
                 return rows
 
     def insertarIntegrante(self, nombre, apellido, telefono):
+        """Método para insertar un nuevo integrante"""
         try:
             con = lite.connect(self._db)
             cur = con.cursor()
@@ -51,6 +57,7 @@ class tandaController:
                 return True
 
     def recuperarIntegrantes(self, idIntegrante = None):
+        """Método para recuperar los integrantes disponibles o un integrante en especifico"""
         try:
             con = lite.connect(self._db)
             cur = con.cursor()
@@ -69,6 +76,7 @@ class tandaController:
                 return rows
 
     def recuperarPeriodicidad(self):
+        """Método para recuperar las periodicidades disponibles"""
         try:
             con = lite.connect(self._db)
             cur = con.cursor()
@@ -83,6 +91,7 @@ class tandaController:
                 return rows
 
     def insertarTandaSalida(self, idTandas, idIntegrante, pagado):
+        """Método para insertar un pago hecho a un tandero"""
         try:
             con = lite.connect(self._db)
             cur = con.cursor()
@@ -97,17 +106,18 @@ class tandaController:
                 return True
 
     def recuperarTandaSalida(self, idTandas = None, idIntegrante = None):
+        """Método para recuperar los pagos rentantes de una tanda"""
         try:
             con = lite.connect(self._db)
             cur = con.cursor()
             if not(idTandas is None and idIntegrante is None):
-                cur.execute('SELECT * FROM TandaSalida WHERE idTandas = ? and idIntegrante = ?', (idTandas, idIntegrante))
+                cur.execute('SELECT * FROM TandaSalida WHERE idTandas = ? and idIntegrante = ? and pagado = ?', (idTandas, idIntegrante, 0))
             elif not(idTandas is None):
-                cur.execute('SELECT * FROM TandaSalida WHERE idTandas = ?', (idTandas))
+                cur.execute('SELECT * FROM TandaSalida WHERE idTandas = ? and pagado = ?', (idTandas, 0))
             elif not(idIntegrante is None):
-                cur.execute('SELECT * FROM TandaSalida WHERE idIntegrante = ?', (idIntegrante))
+                cur.execute('SELECT * FROM TandaSalida WHERE idIntegrante = ? and pagado = ?', (idIntegrante, 0))
             else:
-                cur.execute('SELECT * FROM TandaSalida')
+                cur.execute('SELECT * FROM TandaSalida WHERE pagado = ?', (0))
             rows = cur.fetchall()
         except lite.Error, e:
             print "Error %s:" % e.args[0]
@@ -133,9 +143,7 @@ class tandaController:
             if con:
                 con.close()
                 return rows
-
-    def insertarTandaEntrada(self, idTandas, idIntegrante):
-
+    # def insertarTandaEntrada(self, idTandas, idIntegrantes):
 
 # tanda = tandaController()
 # for p in tanda.recuperarPeriodicidad():
