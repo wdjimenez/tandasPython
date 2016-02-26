@@ -20,7 +20,7 @@ class tandaViewClass(QtGui.QMainWindow, form_class_tanda):
 
 	def crearIntegrante(self):
 		# intApp = QtGui.QApplication()
-		intWindow = integrante.integrantesViewClass(None)
+		intWindow = integrante.integrantesViewClass(self)
 		intWindow.show()
 		intWindow.exec_()
  

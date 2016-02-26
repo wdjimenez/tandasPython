@@ -15,23 +15,24 @@ class integrantesViewClass(QtGui.QDialog, form_class_integrantes):
 		# self.buttonBox.accepted.connect(self.guardarIntegrante)
 		# self.buttonBox.rejected.connect(self.guardarIntegrante)
 		self.pushSave.clicked.connect(self.guardarIntegrante)
-		self.pushCancel.clicked.connect(self.guardarIntegrante)
+		self.pushCancel.clicked.connect(self.close)
   
 	def guardarIntegrante(self):
 	 	# print self.entryNombre.text()
 	 	tandaControl = t.tandaController()
-	 	nombre = self.entryNombre.text()
-	 	apellido = self.entryApellidos.text()
-	 	telefono = self.entryTelefono.text()
+	 	nombre = str(self.entryNombre.text())
+	 	apellido = str(self.entryApellidos.text())
+	 	telefono = str(self.entryTelefono.text())
+	 	result = None
 	 	if (len(nombre) == 0 and len(apellido) == 0 and len(telefono) == 0):
 			QtGui.QMessageBox.about(self,"Información","Es necesario capturar al menos el nombre del integrante")
 		elif len(nombre) > 0:
 			result = tandaControl.insertarIntegrante(nombre, apellido, telefono)
-			self.close()
-	  #   else:
-	  #   	result = tandaControl.insertarIntegrante(nombre, apellido, telefono)
-	  #   	if result:
-	  #       	tkMessageBox.showinfo( "Información", "Se agregó el integrante correctamente")
+	    	if not(result is None):
+	        	QtGui.QMessageBox.about(self, "Información", "Se agregó el integrante correctamente")
+	        	self.entryNombre.clear()
+	        	self.entryApellidos.clear()
+	        	self.entryTelefono.clear()
 
  # def crearTanda(self):
  #   QtGui.QMessageBox.about(self,"About","This is an about box \n shown with QAction of QMenu.")
