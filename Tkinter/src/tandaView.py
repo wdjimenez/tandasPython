@@ -2,19 +2,34 @@
 import Tkinter
 import tkMessageBox
 import tandaController as t
+# Python modules have been installed and Homebrew's site-packages is not
+# in your Python sys.path, so you will not be able to import the modules
+# this formula installed. If you plan to develop with these modules,
+# please run:
+#   mkdir -p /Users/dariojimenez/Library/Python/2.7/lib/python/site-packages
+#   echo 'import site; site.addsitedir("/usr/local/lib/python2.7/site-packages")' >> /Users/dariojimenez/Library/Python/2.7/lib/python/site-packages/homebrew.pth
 
 class tandaView:
     def __init__(self, master):
         self._master = master
+        self._master.geometry("200x300")
         self._master.title("Tanda")
 
-        buttonNew = Tkinter.Button(self._master, text = "Nueva Tanda", command = self.crearTanda)
-        buttonView = Tkinter.Button(self._master, text = "Tandas", command = self.crearTanda)
-        buttonIntegrantes = Tkinter.Button(self._master, text = "Integrantes", command = self.crearIntegrantes)
+        frameButtons = Tkinter.Frame(self._master)
+        frameVersion = Tkinter.Frame(self._master)
 
-        buttonNew.grid(row = 0, column = 0, padx = 50)
-        buttonView.grid(row = 1, column = 0, padx = 50)
-        buttonIntegrantes.grid(row = 2, column = 0, padx = 50)
+        buttonNew = Tkinter.Button(frameButtons, text = "Nueva Tanda", command = self.crearTanda)
+        buttonView = Tkinter.Button(frameButtons, text = "Tandas", command = self.crearTanda)
+        buttonIntegrantes = Tkinter.Button(frameButtons, text = "Integrantes", command = self.crearIntegrantes)
+        labelVersion = Tkinter.Label(frameVersion, text = "Tandas v1.0")
+
+        frameButtons.grid(row = 0)
+        frameVersion.grid(row = 1)
+        buttonNew.grid(row = 0, column = 0, padx = 50, pady = 15)
+        buttonView.grid(row = 1, column = 0, padx = 50, pady = 15)
+        buttonIntegrantes.grid(row = 2, column = 0, padx = 50, pady = 15)
+        # labelVersion.grid(row = 3, column = 0, padx = 50, pady = 90)
+        labelVersion.pack(fill = Tkinter.BOTH, side = Tkinter.BOTTOM)
         self._master.mainloop()
 
     def crearTanda(self):
