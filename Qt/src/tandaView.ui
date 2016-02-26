@@ -1,60 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>tandaView</class>
+ <widget class="QDialog" name="tandaView">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>240</width>
-    <height>320</height>
+    <width>258</width>
+    <height>355</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Tanda</string>
+   <string>Dialog</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
-  <widget class="QMenuBar" name="menubar">
+  <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>240</width>
-     <height>23</height>
+     <x>10</x>
+     <y>160</y>
+     <width>81</width>
+     <height>16</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuTanda">
-    <property name="title">
-     <string>Nuevo</string>
-    </property>
-    <addaction name="actionCrearTanda"/>
-    <addaction name="actionCrearIntegrante"/>
-   </widget>
-   <widget class="QMenu" name="menuVer">
-    <property name="title">
-     <string>Ver</string>
-    </property>
-    <addaction name="actionTandas"/>
-   </widget>
-   <addaction name="menuTanda"/>
-   <addaction name="menuVer"/>
-  </widget>
-  <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionCrearTanda">
-   <property name="text">
-    <string>Tanda</string>
-   </property>
-  </action>
-  <action name="actionCrearIntegrante">
    <property name="text">
     <string>Integrantes</string>
    </property>
-  </action>
-  <action name="actionTandas">
-   <property name="text">
-    <string>Tandas</string>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>20</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
    </property>
-  </action>
+   <property name="text">
+    <string>Fecha Inicio</string>
+   </property>
+  </widget>
+  <widget class="QDateEdit" name="dateEdit">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>10</y>
+     <width>151</width>
+     <height>27</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>60</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Periodicidad</string>
+   </property>
+  </widget>
+  <widget class="QListView" name="listView">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>60</y>
+     <width>151</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="selectionMode">
+    <enum>QAbstractItemView::SingleSelection</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>120</y>
+     <width>59</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Monto</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>110</y>
+     <width>113</width>
+     <height>29</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QListWidget" name="listWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>180</y>
+     <width>231</width>
+     <height>161</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

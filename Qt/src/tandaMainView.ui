@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>240</width>
+    <height>320</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Tanda</string>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>240</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuTanda">
+    <property name="title">
+     <string>Nuevo</string>
+    </property>
+    <addaction name="actionCrearTanda"/>
+    <addaction name="actionCrearIntegrante"/>
+   </widget>
+   <widget class="QMenu" name="menuVer">
+    <property name="title">
+     <string>Ver</string>
+    </property>
+    <addaction name="actionTandas"/>
+   </widget>
+   <addaction name="menuTanda"/>
+   <addaction name="menuVer"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionCrearTanda">
+   <property name="text">
+    <string>Tanda</string>
+   </property>
+  </action>
+  <action name="actionCrearIntegrante">
+   <property name="text">
+    <string>Integrantes</string>
+   </property>
+  </action>
+  <action name="actionTandas">
+   <property name="text">
+    <string>Tandas</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
