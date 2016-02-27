@@ -8,12 +8,12 @@ class tandaController:
         """Se recibe la BD que se va a utilizar"""
         self._db = db
 
-    def crearTanda(self, noIntegrantes, fechaInicio, idPeriodo, monto):
-        """Método para generar una nueva tanda"""
+    def crearTanda(self, integrantes, fechaInicio, idPeriodo, monto):
+        """Método para generar una nueva tanda, integrantes es una lista con los ID integrantes"""
         try:
             con = lite.connect(self._db)
             cur = con.cursor()
-            cur.execute('INSERT INTO Tandas(noIntegrantes, fechaInicio, idPer, monto, finalizada) VALUES(?, ?, ?, ?, ?)', (noIntegrantes, fechaInicio, idPeriodo, monto, 0))
+            cur.execute('INSERT INTO Tandas(fechaInicio, idPer, monto, finalizada) VALUES(?, ?, ?, ?)', (noIntegrantes, fechaInicio, idPeriodo, monto, 0))
             con.commit()
         except lite.Error, e:
             print "Error %s:" % e.args[0]

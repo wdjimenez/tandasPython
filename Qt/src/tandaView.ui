@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>258</width>
-    <height>355</height>
+    <height>389</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Crear Tanda</string>
   </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
@@ -75,7 +75,7 @@
     <string>Monto</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="lineEdit">
+  <widget class="QLineEdit" name="montoEdit">
    <property name="geometry">
     <rect>
      <x>90</x>
@@ -106,6 +106,32 @@
    </property>
    <property name="selectionMode">
     <enum>QAbstractItemView::MultiSelection</enum>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushCrear">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>350</y>
+     <width>88</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Crear</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_2">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>350</y>
+     <width>88</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Cancelar</string>
    </property>
   </widget>
  </widget>
