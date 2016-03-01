@@ -8,12 +8,18 @@ class tandaController:
         """Se recibe la BD que se va a utilizar"""
         self._db = db
 
-    def crearTanda(self, integrantes, fechaInicio, idPeriodo, monto):
+    def crearTanda(self, listIdIntegrantes, fechaInicio, idPeriodo, monto):
         """Método para generar una nueva tanda, integrantes es una lista con los ID integrantes"""
         try:
             con = lite.connect(self._db)
             cur = con.cursor()
-            cur.execute('INSERT INTO Tandas(fechaInicio, idPer, monto, finalizada) VALUES(?, ?, ?, ?)', (noIntegrantes, fechaInicio, idPeriodo, monto, 0))
+            cur.execute('INSERT INTO Tandas(fechaInicio, idPer, monto, finalizada) VALUES(?, ?, ?, ?)', (fechaInicio, idPeriodo, monto, 0))
+            lid = cur.lastrowid
+            #Agregamos los registros de TandaSalida y TandaEntrada para cada integrante            
+            for idIntegrante in listIdIntegrantes:
+                cur.execute('INSERT INTO TandaSalida(idTandas, idIntegrante, pagado) VALUES(?, ?, ?)', (lid, idIntegrante, 0))
+                for pos in range(0, len(listIdIntegrantes)):                    
+                    cur.execute('INSERT INTO TandaEntrada(idTandas, idIntegrante, pos, pagado) VALUES(?, ?, ?, ?)', (lid, idIntegrante, pos, 0))
             con.commit()
         except lite.Error, e:
             print "Error %s:" % e.args[0]
