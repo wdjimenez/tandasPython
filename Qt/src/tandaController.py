@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 import sqlite3 as lite
 import sys
 
@@ -15,10 +15,10 @@ class tandaController:
             cur = con.cursor()
             cur.execute('INSERT INTO Tandas(fechaInicio, idPer, monto, finalizada) VALUES(?, ?, ?, ?)', (fechaInicio, idPeriodo, monto, 0))
             lid = cur.lastrowid
-            #Agregamos los registros de TandaSalida y TandaEntrada para cada integrante            
+            #Agregamos los registros de TandaSalida y TandaEntrada para cada integrante
             for idIntegrante in listIdIntegrantes:
                 cur.execute('INSERT INTO TandaSalida(idTandas, idIntegrante, pagado) VALUES(?, ?, ?)', (lid, idIntegrante, 0))
-                for pos in range(0, len(listIdIntegrantes)):                    
+                for pos in range(0, len(listIdIntegrantes)):
                     cur.execute('INSERT INTO TandaEntrada(idTandas, idIntegrante, pos, pagado) VALUES(?, ?, ?, ?)', (lid, idIntegrante, pos, 0))
             con.commit()
         except lite.Error, e:
@@ -33,7 +33,7 @@ class tandaController:
         """Método para recuperar información de una tanda o de todas las tandas si no se pasa el parámetro idTandas"""
         try:
             con = lite.connect(self._db)
-            cur = con.cursos()
+            cur = con.cursor()
             if not(idTandas is None):
                 cur.execute('SELECT * FROM Tandas WHERE idTandas = ?', (idTandas))
             else:
