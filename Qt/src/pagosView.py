@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import sys
-import sqlite3
 from PyQt4 import QtCore, QtGui, uic
 import tandaController as t
 
@@ -28,15 +27,13 @@ class pagosViewClass(QtGui.QMainWindow, form_class_pagos):
         res = tanda.recuperarTandas(tandaId)
         for r in res:
             self.lineFecha.setText(r[1])
-        datos = tanda.recuperarTandaEntrada(tandaId)
-        for d in datos:
-            idInte = d[1]
-            print idInte
-            # integrante = tanda.recuperarIntegrantes(idInte)
-            # for i in integrante:
-            #     print i[1]
+        integrantes = tanda.recuperarIntegrantesTanda(tandaId)
+        for i in integrantes:
+            print i
+        # SELECT * FROM TandaEntrada as t JOIN Integrantes as i on t.idTandas = 1;
 
-app = QtGui.QApplication(sys.argv)
-MyWindow = pagosViewClass(None)
-MyWindow.show()
-app.exec_()
+
+# app = QtGui.QApplication(sys.argv)
+# MyWindow = pagosViewClass(None)
+# MyWindow.show()
+# app.exec_()

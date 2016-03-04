@@ -4,17 +4,19 @@ import sys
 from PyQt4 import QtCore, QtGui, uic
 import integrantesView as integrante
 import tandaView as	tanda
- 
+import pagosView as pago
+
 # Cargar nuestro archivo .ui
 form_class_tanda = uic.loadUiType("tandaMainView.ui")[0]
- 
+
 class tandaMainViewClass(QtGui.QMainWindow, form_class_tanda):
 # class MyWindowClass(QtGui.QDialog, form_class):
 	def __init__(self, parent=None):
 		QtGui.QMainWindow.__init__(self, parent)
-		self.setupUi(self)  
+		self.setupUi(self)
 		self.actionCrearTanda.triggered.connect(self.crearTanda)
 		self.actionCrearIntegrante.triggered.connect(self.crearIntegrante)
+		self.actionAdministrarEntradas.triggered.connect(self.administrarEntradas)
 
 	def crearTanda(self):
 		tandaWindow = tanda.tandaViewClass(self)
@@ -26,7 +28,12 @@ class tandaMainViewClass(QtGui.QMainWindow, form_class_tanda):
 		intWindow = integrante.integrantesViewClass(self)
 		intWindow.show()
 		intWindow.exec_()
- 
+
+	def administrarEntradas(self):
+		entWindow = pago.pagosViewClass(self)
+		entWindow.show()
+		# app.exec_()
+
 app = QtGui.QApplication(sys.argv)
 MyWindow = tandaMainViewClass(None)
 MyWindow.show()

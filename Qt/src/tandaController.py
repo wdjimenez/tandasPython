@@ -70,9 +70,10 @@ class tandaController:
 
             if idIntegrante is None:
                 cur.execute('SELECT * FROM Integrantes')
+                rows = cur.fetchone()
             else:
                 cur.execute('SELECT * FROM Integrantes WHERE idIntegrante = ?', (idIntegrante))
-            rows = cur.fetchall()
+                rows = cur.fetchall()
         except lite.Error, e:
             print "Error %s:" % e.args[0]
             sys.exit(1)
@@ -141,6 +142,20 @@ class tandaController:
                 cur.execute('SELECT * FROM TandaEntrada WHERE idTandas = ? and idIntegrante = ? and pagado = ?', (idTandas, idIntegrante, 0))
             else:
                 cur.execute('SELECT * FROM TandaEntrada WHERE idTandas = ? and pagado = ?', (idTandas, 0))
+            rows = cur.fetchall()
+        except lite.Error, e:
+            print "Error %s:" % e.args[0]
+            sys.exit(1)
+        finally:
+            if con:
+                con.close()
+                return rows
+
+    def recuperarIntegrantesTanda(self, idTanda):
+        try:
+            con = lite.connect(self._db)
+            cur = con.cursor()
+            cur.execute('SELECT * FROM TandaEntrada WHERE idTandas = ?', (idTanda))
             rows = cur.fetchall()
         except lite.Error, e:
             print "Error %s:" % e.args[0]

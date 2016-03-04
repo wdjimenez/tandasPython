@@ -20,7 +20,7 @@
      <x>0</x>
      <y>0</y>
      <width>240</width>
-     <height>23</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTanda">
@@ -36,8 +36,16 @@
     </property>
     <addaction name="actionTandas"/>
    </widget>
+   <widget class="QMenu" name="menuAdministracion">
+    <property name="title">
+     <string>Administración</string>
+    </property>
+    <addaction name="actionAdministrarEntradas"/>
+    <addaction name="actionSalidas"/>
+   </widget>
    <addaction name="menuTanda"/>
    <addaction name="menuVer"/>
+   <addaction name="menuAdministracion"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionCrearTanda">
@@ -53,6 +61,16 @@
   <action name="actionTandas">
    <property name="text">
     <string>Tandas</string>
+   </property>
+  </action>
+  <action name="actionAdministrarEntradas">
+   <property name="text">
+    <string>Entradas</string>
+   </property>
+  </action>
+  <action name="actionSalidas">
+   <property name="text">
+    <string>Salidas</string>
    </property>
   </action>
  </widget>
