@@ -70,10 +70,9 @@ class tandaController:
 
             if idIntegrante is None:
                 cur.execute('SELECT * FROM Integrantes')
-                rows = cur.fetchone()
             else:
                 cur.execute('SELECT * FROM Integrantes WHERE idIntegrante = ?', (idIntegrante))
-                rows = cur.fetchall()
+            rows = cur.fetchall()
         except lite.Error, e:
             print "Error %s:" % e.args[0]
             sys.exit(1)
@@ -164,6 +163,7 @@ class tandaController:
             if con:
                 con.close()
                 return rows
+        # select * from Integrantes as I JOIN tandaEntrada as T on I.idIntegrante = T.idIntegrante and T.idTandas = 3
     # def insertarTandaEntrada(self, idTandas, idIntegrantes):
 
 # tanda = tandaController()
