@@ -1,2 +1,3 @@
 Qt/src/*.pyc
 Tkinter/
+Qt/src/*.db

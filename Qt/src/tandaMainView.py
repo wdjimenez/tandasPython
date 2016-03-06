@@ -6,6 +6,7 @@ import integrantesView as integrante
 import tandaView as	tanda
 import pagosView as pago
 import salidasView as salidas
+import cerrarView as cerrar
 
 # Cargar nuestro archivo .ui
 form_class_tanda = uic.loadUiType("tandaMainView.ui")[0]
@@ -19,6 +20,7 @@ class tandaMainViewClass(QtGui.QMainWindow, form_class_tanda):
 		self.actionCrearIntegrante.triggered.connect(self.crearIntegrante)
 		self.actionEntradas.triggered.connect(self.tandaEntradas)
 		self.actionSalidas.triggered.connect(self.tandaSalidas)
+		# self.actionCerrar.triggered.connect(self.tandaCerrar)
 
 	def crearTanda(self):
 		tandaWindow = tanda.tandaViewClass(self)
@@ -38,6 +40,11 @@ class tandaMainViewClass(QtGui.QMainWindow, form_class_tanda):
 
 	def tandaSalidas(self):
 		entWindow = salidas.salidasViewClass(self)
+		entWindow.show()
+		entWindow.exec_()
+
+	def tandaCerrar(self):
+		entWindow = cerrar.cerrarViewClass(self)
 		entWindow.show()
 		entWindow.exec_()
 

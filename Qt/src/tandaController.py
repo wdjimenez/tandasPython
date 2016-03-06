@@ -29,6 +29,21 @@ class tandaController:
                 con.close()
                 return True
 
+    def cerrarTanda(self, idTanda):
+        """Método para cerrar una tanda a partir de su ID"""
+        try:
+            con = lite.connect(self._db)
+            cur = con.cursor()
+            cur.execute("UPDATE Tandas SET finalizada = 1 WHERE idTandas = ?", idTanda)
+            con.commit()
+        except Exception as e:
+            print "Error %s:" % e.args[0]
+            sys.exit(1)
+        finally:
+            if con:
+                con.close()
+                return True
+
     def recuperarTandas(self, idTandas = None):
         """Método para recuperar información de una tanda o de todas las tandas si no se pasa el parámetro idTandas"""
         rows = {}
@@ -36,9 +51,9 @@ class tandaController:
             con = lite.connect(self._db)
             cur = con.cursor()
             if not(idTandas is None):
-                cur.execute('SELECT * FROM Tandas WHERE idTandas = ?', (idTandas))
+                cur.execute('SELECT * FROM Tandas WHERE idTandas = ? and finalizada = 0', (idTandas))
             else:
-                cur.execute('SELECT * FROM tandas')
+                cur.execute('SELECT * FROM tandas WHERE finalizada = 0')
             rows = cur.fetchall()
         except Exception as e:
             print "Error %s:" % e.args[0]

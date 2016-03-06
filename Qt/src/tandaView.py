@@ -9,7 +9,6 @@ import tandaController as t
 form_class_integrantes = uic.loadUiType("tandaView.ui")[0]
 
 class tandaViewClass(QtGui.QDialog, form_class_integrantes):
-<<<<<<< Updated upstream
     def __init__(self, parent=None):
         QtGui.QDialog.__init__(self, parent)
         self.setupUi(self)      
@@ -82,7 +81,6 @@ class tandaViewClass(QtGui.QDialog, form_class_integrantes):
             self.containerLayout.addWidget(comboBox)
             # self.listWidgetIntegrantes.addItem(str(integrante[1]) + ' ' + str(integrante[2]))
         
-=======
 	def __init__(self, parent=None):
 		QtGui.QDialog.__init__(self, parent)
 		self.setupUi(self)
@@ -90,4 +88,4 @@ class tandaViewClass(QtGui.QDialog, form_class_integrantes):
 		self._periodicidad = tanda.recuperarPeriodicidad()		
 		# for per in self._periodicidad:
 			# self.listWidgetPeriodo.addItem(per[1])
->>>>>>> Stashed changes
+
