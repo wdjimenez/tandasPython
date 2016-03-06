@@ -20,7 +20,7 @@ class tandaMainViewClass(QtGui.QMainWindow, form_class_tanda):
 		self.actionCrearIntegrante.triggered.connect(self.crearIntegrante)
 		self.actionEntradas.triggered.connect(self.tandaEntradas)
 		self.actionSalidas.triggered.connect(self.tandaSalidas)
-		# self.actionCerrar.triggered.connect(self.tandaCerrar)
+		self.actionCerrar.triggered.connect(self.tandaCerrar)
 
 	def crearTanda(self):
 		tandaWindow = tanda.tandaViewClass(self)
