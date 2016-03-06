@@ -152,6 +152,22 @@ class tandaController:
                 con.close()
                 return rows
 
+    def actualizarTandaSalida(self, idTanda, idIntegrantes):
+        """Método para actualizar los pagos hechos a los tanderos"""
+        try:
+            con = lite.connect(self._db)
+            cur = con.cursor()
+            for idInte in idIntegrantes:
+                cur.execute("UPDATE TandaSalida SET pagado = 1 WHERE idTandas = ? and idIntegrante = ?", (idTanda, idInte))
+            con.commit()
+        except Exception, e:
+            print "Error %s:" % e.args[0]
+            sys.exit(1)
+        finally:
+            if con:
+                con.close()
+                return True
+
     def recuperarTandaEntrada(self, idTandas, idIntegrante = None):
         try:
             con = lite.connect(self._db)
