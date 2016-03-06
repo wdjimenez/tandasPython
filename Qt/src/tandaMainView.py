@@ -5,6 +5,7 @@ from PyQt4 import QtCore, QtGui, uic
 import integrantesView as integrante
 import tandaView as	tanda
 import pagosView as pago
+import salidasView as salidas
 
 # Cargar nuestro archivo .ui
 form_class_tanda = uic.loadUiType("tandaMainView.ui")[0]
@@ -16,7 +17,8 @@ class tandaMainViewClass(QtGui.QMainWindow, form_class_tanda):
 		self.setupUi(self)
 		self.actionCrearTanda.triggered.connect(self.crearTanda)
 		self.actionCrearIntegrante.triggered.connect(self.crearIntegrante)
-		self.actionAdministrarEntradas.triggered.connect(self.administrarEntradas)
+		self.actionEntradas.triggered.connect(self.tandaEntradas)
+		self.actionSalidas.triggered.connect(self.tandaSalidas)
 
 	def crearTanda(self):
 		tandaWindow = tanda.tandaViewClass(self)
@@ -29,10 +31,15 @@ class tandaMainViewClass(QtGui.QMainWindow, form_class_tanda):
 		intWindow.show()
 		intWindow.exec_()
 
-	def administrarEntradas(self):
+	def tandaEntradas(self):
 		entWindow = pago.pagosViewClass(self)
 		entWindow.show()
 		# app.exec_()
+
+	def tandaSalidas(self):
+		entWindow = salidas.salidasViewClass(self)
+		entWindow.show()
+		entWindow.exec_()
 
 app = QtGui.QApplication(sys.argv)
 MyWindow = tandaMainViewClass(None)
