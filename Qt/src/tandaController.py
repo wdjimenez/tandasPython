@@ -29,15 +29,31 @@ class tandaController:
                 con.close()
                 return True
 
+    def cerrarTanda(self, idTanda):
+        """Método para cerrar una tanda a partir de su ID"""
+        try:
+            con = lite.connect(self._db)
+            cur = con.cursor()
+            cur.execute("UPDATE Tandas SET finalizada = 1 WHERE idTandas = ?", idTanda)
+            con.commit()
+        except Exception as e:
+            print "Error %s:" % e.args[0]
+            sys.exit(1)
+        finally:
+            if con:
+                con.close()
+                return True
+
     def recuperarTandas(self, idTandas = None):
         """Método para recuperar información de una tanda o de todas las tandas si no se pasa el parámetro idTandas"""
+        rows = {}
         try:
             con = lite.connect(self._db)
             cur = con.cursor()
             if not(idTandas is None):
-                cur.execute('SELECT * FROM Tandas WHERE idTandas = ?', (idTandas))
+                cur.execute('SELECT * FROM Tandas WHERE idTandas = ? and finalizada = 0', (idTandas))
             else:
-                cur.execute('SELECT * FROM Tandas')
+                cur.execute('SELECT * FROM tandas WHERE finalizada = 0')
             rows = cur.fetchall()
         except Exception as e:
             print "Error %s:" % e.args[0]
@@ -61,6 +77,23 @@ class tandaController:
             if con:
                 con.close()
                 return True
+
+    def recuperarIntegrantesByTandaSalida(self, idTanda):
+        """Método para recuperar los integrantes disponibles de una tanda"""
+        rows = {}
+        try:
+            con = lite.connect(self._db)
+            cur = con.cursor()
+
+            cur.execute('SELECT tandasalida.idIntegrante, nombre, apellido, pagado FROM tandasalida INNER JOIN integrantes ON tandasalida.idIntegrante = integrantes.idIntegrante WHERE idTandas = ?', (idTanda))
+            rows = cur.fetchall()
+        except lite.Error, e:
+            print "Error %s:" % e.args[0]
+            sys.exit(1)
+        finally:
+            if con:
+                con.close()
+                return rows
 
     def recuperarIntegrantes(self, idIntegrante = None):
         """Método para recuperar los integrantes disponibles o un integrante en especifico"""
@@ -132,6 +165,22 @@ class tandaController:
             if con:
                 con.close()
                 return rows
+
+    def actualizarTandaSalida(self, idTanda, idIntegrantes):
+        """Método para actualizar los pagos hechos a los tanderos"""
+        try:
+            con = lite.connect(self._db)
+            cur = con.cursor()
+            for idInte in idIntegrantes:
+                cur.execute("UPDATE TandaSalida SET pagado = 1 WHERE idTandas = ? and idIntegrante = ?", (idTanda, idInte))
+            con.commit()
+        except Exception, e:
+            print "Error %s:" % e.args[0]
+            sys.exit(1)
+        finally:
+            if con:
+                con.close()
+                return True
 
     def recuperarTandaEntrada(self, idTandas, idIntegrante = None):
         try:
