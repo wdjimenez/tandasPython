@@ -66,3 +66,6 @@
 
          - Para eliminar todos los stashes almacenados lo hacemos con:
 	        + $ git stash clear
+
+      * para revertir un commit utilizamos:
+         - $ git revert #codigo-commit
