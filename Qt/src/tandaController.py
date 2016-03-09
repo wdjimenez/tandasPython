@@ -8,12 +8,12 @@ class tandaController:
         """Se recibe la BD que se va a utilizar"""
         self._db = db
 
-    def crearTanda(self, listIdIntegrantes, fechaInicio, idPeriodo, monto):
+    def crearTanda(self, listIdIntegrantes, fechaInicio, idPeriodo, monto, cantInte):
         """Método para generar una nueva tanda, integrantes es una lista con los ID integrantes"""
         try:
             con = lite.connect(self._db)
             cur = con.cursor()
-            cur.execute('INSERT INTO Tandas(fechaInicio, idPer, monto, finalizada) VALUES(?, ?, ?, ?)', (fechaInicio, idPeriodo, monto, 0))
+            cur.execute('INSERT INTO Tandas(fechaInicio, idPer, monto, finalizada, cantInte) VALUES(?, ?, ?, ?, ?)', (fechaInicio, idPeriodo, monto, 0, cantInte))
             lid = cur.lastrowid
             #Agregamos los registros de TandaSalida y TandaEntrada para cada integrante
             for idIntegrante in listIdIntegrantes:
@@ -114,12 +114,15 @@ class tandaController:
                 con.close()
                 return rows
 
-    def recuperarPeriodicidad(self):
+    def recuperarPeriodicidad(self, idPeriodo = None):
         """Método para recuperar las periodicidades disponibles"""
         try:
             con = lite.connect(self._db)
             cur = con.cursor()
-            cur.execute('SELECT * FROM Periodicidad')
+            if not(idPeriodo is None):
+                cur.execute('SELECT * FROM Periodicidad WHERE idPer = ?', (idPeriodo))
+            else:
+                cur.execute('SELECT * FROM Periodicidad')
             rows = cur.fetchall()
         except lite.Error, e:
             print "Error %s:" % e.args[0]
@@ -203,7 +206,21 @@ class tandaController:
         try:
             con = lite.connect(self._db)
             cur = con.cursor()
-            cur.execute('SELECT * FROM TandaEntrada WHERE idTandas = ?', (idTanda))
+            cur.execute('SELECT * FROM Integrantes AS I INNER JOIN tandaEntrada AS T ON I.idIntegrante = T.idIntegrante AND T.idTandas = ? ', (idTanda))
+            rows = cur.fetchall()
+        except lite.Error, e:
+            print "Error %s:" % e.args[0]
+            sys.exit(1)
+        finally:
+            if con:
+                con.close()
+                return rows
+
+    def recuperarIntegrantesByTandaEntrada(self, idTanda, pos):
+        try:
+            con = lite.connect(self._db)
+            cur = con.cursor()
+            cur.execute('SELECT * FROM Integrantes AS I INNER JOIN tandaEntrada AS T ON I.idIntegrante = T.idIntegrante AND T.idTandas = ? AND T.pos = ?', (idTanda, pos))
             rows = cur.fetchall()
         except lite.Error, e:
             print "Error %s:" % e.args[0]

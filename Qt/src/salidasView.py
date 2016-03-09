@@ -24,8 +24,8 @@ class salidasViewClass(QtGui.QDialog, form_class_salidas):
 
 		for tan in listaTandas:
 			key = str(tan[0]) + ' - ' + str(tan[1])
-			self._tandas[key] = str(tan[0])			
-			self.comboBoxTandas.addItem(key)		
+			self._tandas[key] = str(tan[0])
+			self.comboBoxTandas.addItem(key)
 
 
 	def actualizarIntegrantes(self, newIndex):
@@ -39,27 +39,27 @@ class salidasViewClass(QtGui.QDialog, form_class_salidas):
 		self._currentSelected = self._tandas[str(self.comboBoxTandas.currentText())]
 		integrantes = self._tandaControl.recuperarIntegrantesByTandaSalida(self._currentSelected)
 
-		self.actualizarTableWidget(integrantes)	
+		self.actualizarTableWidget(integrantes)
 
 	def actualizarTableWidget(self, integrantesDict):
 		self.tableWidget.clearContents()
 		self.tableWidget.setRowCount(0)
 		self._idIntegrantes = {}
 
-		for integrante in integrantesDict:			
+		for integrante in integrantesDict:
 			row = self.tableWidget.rowCount()
 
 			self._idIntegrantes[row] = str(integrante[0])
 
 			nombre = QtGui.QTableWidgetItem(str(integrante[1]))
-			apellido = QtGui.QTableWidgetItem(str(integrante[2]))			
+			apellido = QtGui.QTableWidgetItem(str(integrante[2]))
 
 			nombre.setFlags(QtCore.Qt.ItemIsEnabled)
 			apellido.setFlags(QtCore.Qt.ItemIsEnabled)
 
 			self.tableWidget.insertRow(row)
-			self.tableWidget.setItem(row, 0, nombre)			
-			self.tableWidget.setItem(row, 1, apellido)			
+			self.tableWidget.setItem(row, 0, nombre)
+			self.tableWidget.setItem(row, 1, apellido)
 
 			pWidget = QtGui.QWidget()
 			pCheckBox = QtGui.QCheckBox()
@@ -73,7 +73,7 @@ class salidasViewClass(QtGui.QDialog, form_class_salidas):
 			pLayout.setAlignment(QtCore.Qt.AlignCenter)
 			pLayout.setContentsMargins(0,0,0,0)
 			pWidget.setLayout(pLayout)
-			self.tableWidget.setCellWidget(row, 2, pWidget)	
+			self.tableWidget.setCellWidget(row, 2, pWidget)
 
 	def actualizarSalidas(self):
 		#Recorremos el table widget y verificamos si algún check esta activo

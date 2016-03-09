@@ -11,7 +11,7 @@ form_class_integrantes = uic.loadUiType("tandaView.ui")[0]
 class tandaViewClass(QtGui.QDialog, form_class_integrantes):
     def __init__(self, parent=None):
         QtGui.QDialog.__init__(self, parent)
-        self.setupUi(self)      
+        self.setupUi(self)
         tanda = t.tandaController()
         self.pushCancel.clicked.connect(self.close)
 
@@ -19,7 +19,7 @@ class tandaViewClass(QtGui.QDialog, form_class_integrantes):
         self.montoEdit.textChanged.connect(self.validarNumero)
         self.pushCrear.clicked.connect(self.crearTanda)
         self.spinBoxIntegrantes.valueChanged.connect(self.generarIntegrantes)
-        
+
         # the default label
         self.containerLayout = None
         self.container = None
@@ -36,10 +36,10 @@ class tandaViewClass(QtGui.QDialog, form_class_integrantes):
 
         for integrante in integrantes:
             self._integrantes[str(integrante[1]) + ' ' + str(integrante[2])] = integrante[0]
-                
+
 
     def crearTanda(self):
-        #Validamos que se introduzca un integrante        
+        #Validamos que se introduzca un integrante
         if self.spinBoxIntegrantes.value() == 0:
             QtGui.QMessageBox.about(self,"Error!","Debe seleccionar al menos un integrante")
             return
@@ -50,12 +50,16 @@ class tandaViewClass(QtGui.QDialog, form_class_integrantes):
         idPeriodo = ""
         for per in self.listWidgetPeriodo.selectedItems():
             idPeriodo = self._periodicidad[str(per.text())]
+        # start Code Max
+        cantInte = self.spinBoxIntegrantes.value()
+        # print cantInte
+        # end Code Max
         idList = []
         for elemento in range(0, self.containerLayout.count()):
             idList.append(self._integrantes[str(self.containerLayout.itemAt(elemento).widget().currentText())])
 
         tandaControl = t.tandaController()
-        tandaControl.crearTanda(idList, str(self.dateEdit.date().toPyDate()), idPeriodo, self.montoEdit.text().toInt()[0])
+        tandaControl.crearTanda(idList, str(self.dateEdit.date().toPyDate()), idPeriodo, self.montoEdit.text().toInt()[0], cantInte)
         self.close()
 
 
@@ -76,16 +80,15 @@ class tandaViewClass(QtGui.QDialog, form_class_integrantes):
         self.scrollArea.setWidget(self.container)
         for _ in range(value):
             comboBox = QtGui.QComboBox()
-            for key, _ in self._integrantes.items():                
+            for key, _ in self._integrantes.items():
                 comboBox.addItem(key)
             self.containerLayout.addWidget(comboBox)
             # self.listWidgetIntegrantes.addItem(str(integrante[1]) + ' ' + str(integrante[2]))
-        
+
 	def __init__(self, parent=None):
 		QtGui.QDialog.__init__(self, parent)
 		self.setupUi(self)
 		tanda = t.tandaController()
-		self._periodicidad = tanda.recuperarPeriodicidad()		
+		self._periodicidad = tanda.recuperarPeriodicidad()
 		# for per in self._periodicidad:
 			# self.listWidgetPeriodo.addItem(per[1])
-

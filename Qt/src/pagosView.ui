@@ -40,7 +40,7 @@
      <string>Fecha</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="pushButtonAceptar">
     <property name="geometry">
      <rect>
       <x>160</x>
@@ -53,7 +53,7 @@
      <string>Aceptar</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushCancel">
+   <widget class="QPushButton" name="pushButtonCancel">
     <property name="geometry">
      <rect>
       <x>310</x>
@@ -89,12 +89,27 @@
    <widget class="QTableWidget" name="tableWidget">
     <property name="geometry">
      <rect>
-      <x>80</x>
+      <x>20</x>
       <y>80</y>
-      <width>401</width>
+      <width>521</width>
       <height>192</height>
      </rect>
     </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>true</bool>
+    </attribute>
+    <attribute name="horizontalHeaderCascadingSectionResizes">
+     <bool>true</bool>
+    </attribute>
+    <attribute name="horizontalHeaderDefaultSectionSize">
+     <number>100</number>
+    </attribute>
+    <attribute name="horizontalHeaderHighlightSections">
+     <bool>true</bool>
+    </attribute>
+    <attribute name="verticalHeaderCascadingSectionResizes">
+     <bool>false</bool>
+    </attribute>
     <column>
      <property name="text">
       <string>Nombre</string>
