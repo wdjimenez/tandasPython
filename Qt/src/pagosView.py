@@ -13,6 +13,8 @@ class pagosViewClass(QtGui.QMainWindow, form_class_pagos):
         self.pushButtonAceptar.clicked.connect(self.actualizarEntradas)
         self.pushButtonCancel.clicked.connect(self.close)
         self.comboBoxTandas.currentIndexChanged.connect(self.mostrarByPeriodo)
+        self.dateEdit.setMinimumDate(QtCore.QDate.currentDate())
+        self.dateEdit.dateChanged.connect(self.mostrarByPeriodo)
 
         self._tandaControl = t.tandaController()
         listaTandas = self._tandaControl.recuperarTandas()
@@ -27,9 +29,12 @@ class pagosViewClass(QtGui.QMainWindow, form_class_pagos):
 
     def mostrarByPeriodo(self):
         #  Fecha
-        self._fechaHoy = QtCore.QDate.currentDate()
-        self.lineFecha.setText(self._fechaHoy.toString("yyyy-MM-dd"))
-        self.lineFecha.setDisabled(1)
+        # self._fechaHoy = QtCore.QDate.currentDate()
+        # self.lineFecha.setText(self._fechaHoy.toString("yyyy-MM-dd"))
+        # self.lineFecha.setDisabled(1)
+        # print self.dateEdit.date().toPyDate()
+        self._fecha = str(self.dateEdit.date().toPyDate())
+        fechaSelec = QtCore.QDate.fromString(self._fecha, "yyyy-MM-dd")
         #
         self._currentSelected = self._tandas[str(self.comboBoxTandas.currentText())]
         inforTandaSeleccionada = self._tandaControl.recuperarTandas(self._currentSelected)
@@ -41,11 +46,14 @@ class pagosViewClass(QtGui.QMainWindow, form_class_pagos):
         cantInte = inforTandaSeleccionada[0][5]
         fechaInf = QtCore.QDate.fromString(fechaInicio, "yyyy-MM-dd")
 
-        for pos in range(cantInte - 1):
+        fechaFinal = fechaInf.addDays(self._periodoDias * cantInte)
+        self.dateEdit.setMaximumDate(fechaFinal)
+
+        for pos in range(cantInte):
             self._fi = fechaInf.addDays(self._periodoDias * pos )
             self._fs = fechaInf.addDays(self._periodoDias * ( pos + 1) )
             # self._fechaHoy = self._fechaHoy.fromString(fechaInicio, "yyyy-MM-dd").addDays(15)
-            if not(self._fechaHoy >= self._fi and self._fechaHoy <= self._fs ):
+            if not(fechaSelec >= self._fi and fechaSelec <= self._fs ):
                 continue
             self.actualizarTableWidgetByPeriodo(self._currentSelected, pos)
 
@@ -57,7 +65,7 @@ class pagosViewClass(QtGui.QMainWindow, form_class_pagos):
         self._idIntegrantes = {}
         integrantesDict = self._tandaControl.recuperarIntegrantesByTandaEntrada(idTanda, periodo)
         for integrante in integrantesDict:
-            print integrante
+            # print integrante
             row = self.tableWidget.rowCount()
             self._idIntegrantes[row] = str(integrante[0])
             nombre = QtGui.QTableWidgetItem(str(integrante[1]) + " " + str(integrante[2]))
