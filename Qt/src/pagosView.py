@@ -13,8 +13,10 @@ class pagosViewClass(QtGui.QMainWindow, form_class_pagos):
         self.pushButtonAceptar.clicked.connect(self.actualizarEntradas)
         self.pushButtonCancel.clicked.connect(self.close)
         self.comboBoxTandas.currentIndexChanged.connect(self.mostrarByPeriodo)
-        self.dateEdit.setMinimumDate(QtCore.QDate.currentDate())
-        self.dateEdit.dateChanged.connect(self.mostrarByPeriodo)
+        self.calendarWidget.setMinimumDate(QtCore.QDate.currentDate())
+        self.calendarWidget.clicked[QtCore.QDate].connect(self.mostrarByPeriodo)
+        # self.dateEdit.setMinimumDate(QtCore.QDate.currentDate())
+        # self.dateEdit.dateChanged.connect(self.mostrarByPeriodo)
 
         self._tandaControl = t.tandaController()
         listaTandas = self._tandaControl.recuperarTandas()
@@ -31,10 +33,7 @@ class pagosViewClass(QtGui.QMainWindow, form_class_pagos):
 			self.comboBoxTandas.addItem(itemTanda)
 
     def mostrarByPeriodo(self):
-        #  Fecha
-        self._fecha = str(self.dateEdit.date().toPyDate())
-        fechaSelec = QtCore.QDate.fromString(self._fecha, "yyyy-MM-dd")
-        #
+        self._fecha = self.calendarWidget.selectedDate()
         self._currentSelected = self._tandas[str(self.comboBoxTandas.currentText())]
         inforTandaSeleccionada = self._tandaControl.recuperarTandas(self._currentSelected)
 
@@ -46,13 +45,12 @@ class pagosViewClass(QtGui.QMainWindow, form_class_pagos):
         fechaInf = QtCore.QDate.fromString(fechaInicio, "yyyy-MM-dd")
 
         fechaFinal = fechaInf.addDays(self._periodoDias * cantInte)
-        self.dateEdit.setMaximumDate(fechaFinal)
+        self.calendarWidget.setMaximumDate(fechaFinal)
 
         for pos in range(cantInte):
             self._fi = fechaInf.addDays(self._periodoDias * pos )
             self._fs = fechaInf.addDays(self._periodoDias * ( pos + 1) )
-            # self._fechaHoy = self._fechaHoy.fromString(fechaInicio, "yyyy-MM-dd").addDays(15)
-            if not(fechaSelec >= self._fi and fechaSelec <= self._fs ):
+            if not(self._fecha >= self._fi and self._fecha <= self._fs ):
                 continue
             self._pos = pos
             self.actualizarTableWidgetByPeriodo(self._currentSelected, pos)
@@ -76,8 +74,6 @@ class pagosViewClass(QtGui.QMainWindow, form_class_pagos):
             pCheckBox = QtGui.QCheckBox()
             if str(integrante[7]) == '1':
                 continue
-                # pCheckBox.setCheckState(QtCore.Qt.Checked)
-                # pCheckBox.setDisabled(True)
 
             pLayout = QtGui.QHBoxLayout(pWidget)
             pLayout.addWidget(pCheckBox)

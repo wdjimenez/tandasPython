@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>558</width>
-    <height>380</height>
+    <height>544</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,8 +30,8 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>160</x>
-      <y>50</y>
+      <x>90</x>
+      <y>40</y>
       <width>46</width>
       <height>13</height>
      </rect>
@@ -44,7 +44,7 @@
     <property name="geometry">
      <rect>
       <x>160</x>
-      <y>300</y>
+      <y>430</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -57,7 +57,7 @@
     <property name="geometry">
      <rect>
       <x>310</x>
-      <y>300</y>
+      <y>430</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -80,7 +80,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>80</y>
+      <y>210</y>
       <width>521</width>
       <height>192</height>
      </rect>
@@ -124,13 +124,13 @@
      </property>
     </column>
    </widget>
-   <widget class="QDateEdit" name="dateEdit">
+   <widget class="QCalendarWidget" name="calendarWidget">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>150</x>
       <y>40</y>
-      <width>171</width>
-      <height>22</height>
+      <width>256</width>
+      <height>155</height>
      </rect>
     </property>
    </widget>
