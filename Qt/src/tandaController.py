@@ -202,20 +202,6 @@ class tandaController:
                 con.close()
                 return rows
 
-    def recuperarIntegrantesTanda(self, idTanda):
-        try:
-            con = lite.connect(self._db)
-            cur = con.cursor()
-            cur.execute('SELECT * FROM Integrantes AS I INNER JOIN tandaEntrada AS T ON I.idIntegrante = T.idIntegrante AND T.idTandas = ? ', (idTanda))
-            rows = cur.fetchall()
-        except lite.Error, e:
-            print "Error %s:" % e.args[0]
-            sys.exit(1)
-        finally:
-            if con:
-                con.close()
-                return rows
-
     def recuperarIntegrantesByTandaEntrada(self, idTanda, pos):
         try:
             con = lite.connect(self._db)
@@ -229,8 +215,22 @@ class tandaController:
             if con:
                 con.close()
                 return rows
-        # select * from Integrantes as I JOIN tandaEntrada as T on I.idIntegrante = T.idIntegrante and T.idTandas = 3
-    # def insertarTandaEntrada(self, idTandas, idIntegrantes):
+
+    def actualizarTandaEntrada(self, idTanda, idIntegrantes, pos):
+        """Método para actualizar los pagos hechos a los tanderos"""
+        try:
+            con = lite.connect(self._db)
+            cur = con.cursor()
+            for idInte in idIntegrantes:
+                cur.execute("UPDATE TandaEntrada SET pagado = 1 WHERE idTandas = ? and idIntegrante = ? and pos = ?", (idTanda, idInte, pos))
+            con.commit()
+        except Exception, e:
+            print "Error %s:" % e.args[0]
+            sys.exit(1)
+        finally:
+            if con:
+                con.close()
+                return True
 
 # tanda = tandaController()
 # for p in tanda.recuperarPeriodicidad():

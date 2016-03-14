@@ -21,6 +21,9 @@ class pagosViewClass(QtGui.QMainWindow, form_class_pagos):
         self._tandas = {}
         self._currentSelected = ""
 
+        # _idIntegrantes se utilizará en actualizarEntradas
+        self._idIntegrantes = {}
+        self._pos = 0
         # comboBoxTandas
         for tanda in listaTandas:
 			itemTanda = str(tanda[0]) + ' - ' + str(tanda[1])
@@ -29,10 +32,6 @@ class pagosViewClass(QtGui.QMainWindow, form_class_pagos):
 
     def mostrarByPeriodo(self):
         #  Fecha
-        # self._fechaHoy = QtCore.QDate.currentDate()
-        # self.lineFecha.setText(self._fechaHoy.toString("yyyy-MM-dd"))
-        # self.lineFecha.setDisabled(1)
-        # print self.dateEdit.date().toPyDate()
         self._fecha = str(self.dateEdit.date().toPyDate())
         fechaSelec = QtCore.QDate.fromString(self._fecha, "yyyy-MM-dd")
         #
@@ -55,6 +54,7 @@ class pagosViewClass(QtGui.QMainWindow, form_class_pagos):
             # self._fechaHoy = self._fechaHoy.fromString(fechaInicio, "yyyy-MM-dd").addDays(15)
             if not(fechaSelec >= self._fi and fechaSelec <= self._fs ):
                 continue
+            self._pos = pos
             self.actualizarTableWidgetByPeriodo(self._currentSelected, pos)
 
     def actualizarTableWidgetByPeriodo(self, idTanda, periodo):
@@ -91,8 +91,15 @@ class pagosViewClass(QtGui.QMainWindow, form_class_pagos):
             self.tableWidget.setCellWidget(row, 3, pWidget)
 
     def actualizarEntradas(self):
-        print "Aceptar"
-        self.close()
+		listaIntegrantes = []
+		for row in range(0, self.tableWidget.rowCount()):
+			checkBox = self.tableWidget.cellWidget(row, 3).layout().itemAt(0).widget()
+			if checkBox.isEnabled() and checkBox.isChecked():
+				listaIntegrantes.append(self._idIntegrantes[row])
+		if len(listaIntegrantes):
+			self._tandaControl.actualizarTandaEntrada(self._currentSelected , listaIntegrantes, self._pos)
+		if self.sender() and self.sender().text() == 'Aceptar':
+			self.close()
 
 # app = QtGui.QApplication(sys.argv)
 # MyWindow = pagosViewClass(None)
