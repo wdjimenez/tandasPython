@@ -75,8 +75,9 @@ class pagosViewClass(QtGui.QMainWindow, form_class_pagos):
             pWidget = QtGui.QWidget()
             pCheckBox = QtGui.QCheckBox()
             if str(integrante[7]) == '1':
-                pCheckBox.setCheckState(QtCore.Qt.Checked)
-                pCheckBox.setDisabled(True)
+                continue
+                # pCheckBox.setCheckState(QtCore.Qt.Checked)
+                # pCheckBox.setDisabled(True)
 
             pLayout = QtGui.QHBoxLayout(pWidget)
             pLayout.addWidget(pCheckBox)
