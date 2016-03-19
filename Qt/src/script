@@ -1,0 +1,38 @@
+CREATE TABLE sqlite_sequence(name,seq);
+CREATE TABLE "Integrantes" (
+	`idIntegrante`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	`nombre`	TEXT NOT NULL,
+	`apellido`	TEXT,
+	`telefono`	TEXT
+);
+;
+CREATE TABLE "TandaEntrada" (
+	`idTandas`	INTEGER NOT NULL,
+	`idIntegrante`	INTEGER NOT NULL,
+	`pos`	INTEGER NOT NULL,
+	`pagado`	INTEGER,
+	PRIMARY KEY(idTandas,idIntegrante,pos)
+);
+;
+CREATE TABLE "TandaSalida" (
+	`idTandas`	INTEGER NOT NULL,
+	`idIntegrante`	INTEGER NOT NULL,
+	`pagado`	INTEGER,
+	PRIMARY KEY(idTandas,idIntegrante)
+);
+;
+CREATE TABLE "Periodicidad" (
+	`idPer`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	`tipoPeriodo`	TEXT NOT NULL,
+	`cantDias`	INTEGER
+);
+;
+CREATE TABLE "Tandas" (
+	`idTandas`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	`fechaInicio`	REAL NOT NULL,
+	`idPer`	INTEGER NOT NULL,
+	`monto`	REAL,
+	`finalizada`	INTEGER,
+	`cantInte`	INTEGER
+);
+;

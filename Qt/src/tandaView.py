@@ -15,7 +15,8 @@ class tandaViewClass(QtGui.QDialog, form_class_integrantes):
         tanda = t.tandaController()
         self.pushCancel.clicked.connect(self.close)
 
-        self.dateEdit.setMinimumDate(QtCore.QDate.currentDate());
+        # self.dateEdit.setMinimumDate(QtCore.QDate.currentDate());
+        self.calendarWidget.setMinimumDate(QtCore.QDate.currentDate())
         self.montoEdit.textChanged.connect(self.validarNumero)
         self.pushCrear.clicked.connect(self.crearTanda)
         self.spinBoxIntegrantes.valueChanged.connect(self.generarIntegrantes)
@@ -30,9 +31,7 @@ class tandaViewClass(QtGui.QDialog, form_class_integrantes):
         self._periodicidad = {}
         for per in periodicidad:
             self._periodicidad[str(per[1])] = per[0]
-            self.listWidgetPeriodo.addItem(str(per[1]))
-        if len(periodicidad) > 0:
-            self.listWidgetPeriodo.setItemSelected(self.listWidgetPeriodo.item(0), True)
+            self.comboBoxPeriodo.addItem(str(per[1]))
 
         for integrante in integrantes:
             self._integrantes[str(integrante[1]) + ' ' + str(integrante[2])] = integrante[0]
@@ -47,9 +46,7 @@ class tandaViewClass(QtGui.QDialog, form_class_integrantes):
         if self.montoEdit.text().toInt()[0] == 0:
             QtGui.QMessageBox.about(self,"Error!","El monto debe ser mayor a cero")
             return
-        idPeriodo = ""
-        for per in self.listWidgetPeriodo.selectedItems():
-            idPeriodo = self._periodicidad[str(per.text())]
+        idPeriodo = self._periodicidad[str(self.comboBoxPeriodo.currentText())]
         # start Code Max
         cantInte = self.spinBoxIntegrantes.value()
         # print cantInte
@@ -59,7 +56,7 @@ class tandaViewClass(QtGui.QDialog, form_class_integrantes):
             idList.append(self._integrantes[str(self.containerLayout.itemAt(elemento).widget().currentText())])
 
         tandaControl = t.tandaController()
-        tandaControl.crearTanda(idList, str(self.dateEdit.date().toPyDate()), idPeriodo, self.montoEdit.text().toInt()[0], cantInte)
+        tandaControl.crearTanda(idList, str(self.calendarWidget.selectedDate().toString("yyyy-MM-dd")), idPeriodo, self.montoEdit.text().toInt()[0], cantInte)
         self.close()
 
 
@@ -85,10 +82,3 @@ class tandaViewClass(QtGui.QDialog, form_class_integrantes):
             self.containerLayout.addWidget(comboBox)
             # self.listWidgetIntegrantes.addItem(str(integrante[1]) + ' ' + str(integrante[2]))
 
-	def __init__(self, parent=None):
-		QtGui.QDialog.__init__(self, parent)
-		self.setupUi(self)
-		tanda = t.tandaController()
-		self._periodicidad = tanda.recuperarPeriodicidad()
-		# for per in self._periodicidad:
-			# self.listWidgetPeriodo.addItem(per[1])

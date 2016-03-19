@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import sys
 from PyQt4 import QtCore, QtGui, uic
+from datetime import datetime
 import tandaController as t
 
 form_class_pagos = uic.loadUiType("pagosView.ui")[0]
@@ -33,42 +34,58 @@ class pagosViewClass(QtGui.QMainWindow, form_class_pagos):
 			self.comboBoxTandas.addItem(itemTanda)
 
     def mostrarByPeriodo(self):
-        self._fecha = self.calendarWidget.selectedDate()
-        self._currentSelected = self._tandas[str(self.comboBoxTandas.currentText())]
+        # Fecha Seleccionada
+        selFecha = self.calendarWidget.selectedDate()
+        # Tanda Seleccionada
+        self._currentSelected = self._tandas[str(self.comboBoxTandas.currentText())]        
+        # Recuperamos la información de la tanda
         inforTandaSeleccionada = self._tandaControl.recuperarTandas(self._currentSelected)
-
+        # Recuperamos la información del periodo
         periodicidad = self._tandaControl.recuperarPeriodicidad(str(inforTandaSeleccionada[0][2]))
-        self._periodoDias = periodicidad[0][2]
+        # Cuantos días tiene el periodo?
+        periodoDias = periodicidad[0][2]
 
         fechaInicio = inforTandaSeleccionada[0][1]
-        cantInte = inforTandaSeleccionada[0][5]
         fechaInf = QtCore.QDate.fromString(fechaInicio, "yyyy-MM-dd")
 
-        fechaFinal = fechaInf.addDays(self._periodoDias * cantInte)
+        fechaFinal = fechaInf.addDays(periodoDias * inforTandaSeleccionada[0][5])
+        
+        # Cambiamos el rango de fechas que se pueden seleccionar de acuerdo a la tanda
+        self.calendarWidget.setMinimumDate(fechaInf)
         self.calendarWidget.setMaximumDate(fechaFinal)
 
-        for pos in range(cantInte):
-            self._fi = fechaInf.addDays(self._periodoDias * pos )
-            self._fs = fechaInf.addDays(self._periodoDias * ( pos + 1) )
-            if not(self._fecha >= self._fi and self._fecha <= self._fs ):
-                continue
-            self._pos = pos
-            self.actualizarTableWidgetByPeriodo(self._currentSelected, pos)
-
-    def actualizarTableWidgetByPeriodo(self, idTanda, periodo):
-
+        # Reiniciamos el grid
         self.tableWidget.clearContents()
         self.tableWidget.setRowCount(0)
 
+        for n in range(inforTandaSeleccionada[0][5]):
+            fi = fechaInf.addDays(periodoDias * n )
+            fs = fechaInf.addDays(periodoDias * ( n + 1) )
+            fecha = datetime(selFecha.year(), selFecha.month(), selFecha.day())
+            rangoInicial = datetime(fi.year(), fi.month(), fi.day())
+            rangoFinal = datetime(fs.year(), fs.month(), fs.day())
+
+            if fecha >= rangoInicial and fecha <= rangoFinal:
+                self.actualizarTableWidgetByPeriodo(self._currentSelected, n)
+                break
+            # print self._fi, self._fs
+            # print n
+            # if not(selFecha >= self._fi and selFecha <= self._fs ):
+                # lv_periodo = n
+                # break            
+        # print lv_periodo
+        # if lv_periodo >= 0:
+        #     self.actualizarTableWidgetByPeriodo(self._currentSelected, lv_periodo)
+
+    def actualizarTableWidgetByPeriodo(self, idTanda, periodo):
         self._idIntegrantes = {}
         integrantesDict = self._tandaControl.recuperarIntegrantesByTandaEntrada(idTanda, periodo)
         for integrante in integrantesDict:
-            # print integrante
             row = self.tableWidget.rowCount()
             self._idIntegrantes[row] = str(integrante[0])
             nombre = QtGui.QTableWidgetItem(str(integrante[1]) + " " + str(integrante[2]))
             periodo = QtGui.QTableWidgetItem(str(integrante[6]))
-            fecha = QtGui.QTableWidgetItem(self._fi.toString("yyyy-MM-dd") + " - " + self._fs.toString("yyyy-MM-dd"))
+            # fecha = QtGui.QTableWidgetItem(self._fi.toString("yyyy-MM-dd") + " - " + self._fs.toString("yyyy-MM-dd"))
 
             pWidget = QtGui.QWidget()
             pCheckBox = QtGui.QCheckBox()
@@ -84,7 +101,7 @@ class pagosViewClass(QtGui.QMainWindow, form_class_pagos):
             self.tableWidget.insertRow(row)
             self.tableWidget.setItem(row, 0, nombre)
             self.tableWidget.setItem(row, 1, periodo)
-            self.tableWidget.setItem(row, 2, fecha)
+            # self.tableWidget.setItem(row, 2, fecha)
             self.tableWidget.setCellWidget(row, 3, pWidget)
 
     def actualizarEntradas(self):

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import sys
 from PyQt4 import QtCore, QtGui, uic
+import tandaController as controller
 import integrantesView as integrante
 import tandaView as	tanda
 import pagosView as pago
@@ -21,6 +22,10 @@ class tandaMainViewClass(QtGui.QMainWindow, form_class_tanda):
 		self.actionEntradas.triggered.connect(self.tandaEntradas)
 		self.actionSalidas.triggered.connect(self.tandaSalidas)
 		self.actionCerrar.triggered.connect(self.tandaCerrar)
+
+		t = controller.tandaController()
+		t.initDB()
+
 
 	def crearTanda(self):
 		tandaWindow = tanda.tandaViewClass(self)

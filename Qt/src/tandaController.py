@@ -8,6 +8,59 @@ class tandaController:
         """Se recibe la BD que se va a utilizar"""
         self._db = db
 
+    def initDB(self):
+        try:
+            con = lite.connect(self._db)
+            cur = con.cursor()
+
+            cur.executescript('''
+                CREATE TABLE IF NOT EXISTS Integrantes (
+                    idIntegrante  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+                    nombre    TEXT NOT NULL,
+                    apellido  TEXT,
+                    telefono  TEXT,
+                    PRIMARY KEY(idIntegrante)
+                );   
+                CREATE TABLE IF NOT EXISTS TandaEntrada (
+                    idTandas  INTEGER NOT NULL,
+                    idIntegrante  INTEGER NOT NULL,
+                    pos   INTEGER NOT NULL,
+                    pagado    INTEGER,
+                    PRIMARY KEY(idTandas,idIntegrante,pos)
+                );
+                
+                CREATE TABLE IF NOT EXISTS TandaSalida (
+                    idTandas  INTEGER NOT NULL,
+                    idIntegrante  INTEGER NOT NULL,
+                    pagado    INTEGER,
+                    PRIMARY KEY(idTandas,idIntegrante)
+                );
+                
+                CREATE TABLE IF NOT EXISTS Periodicidad (
+                    idPer INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+                    tipoPeriodo   TEXT NOT NULL,
+                    cantDias  INTEGER,
+                    PRIMARY KEY(idPer)
+                );
+                
+                CREATE TABLE IF NOT EXISTS Tandas (
+                    idTandas  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+                    fechaInicio   REAL NOT NULL,
+                    idPer INTEGER NOT NULL,
+                    monto REAL,
+                    finalizada    INTEGER,
+                    cantInte  INTEGER,
+                    PRIMARY KEY(idTandas)
+                );             
+            ''')
+
+        except lite.Error, e:
+            print "Error %s:" % e.args[0]
+            sys.exit(1)
+        finally:
+            if con:
+                con.close()
+
     def crearTanda(self, listIdIntegrantes, fechaInicio, idPeriodo, monto, cantInte):
         """Método para generar una nueva tanda, integrantes es una lista con los ID integrantes"""
         try:
@@ -34,7 +87,7 @@ class tandaController:
         try:
             con = lite.connect(self._db)
             cur = con.cursor()
-            cur.execute("UPDATE Tandas SET finalizada = 1 WHERE idTandas = ?", idTanda)
+            cur.execute("UPDATE Tandas SET finalizada = 1 WHERE idTandas = ?", (idTanda,))
             con.commit()
         except Exception as e:
             print "Error %s:" % e.args[0]
@@ -51,7 +104,7 @@ class tandaController:
             con = lite.connect(self._db)
             cur = con.cursor()
             if not(idTandas is None):
-                cur.execute('SELECT * FROM Tandas WHERE idTandas = ? and finalizada = 0', (idTandas))
+                cur.execute('SELECT * FROM Tandas WHERE idTandas = ? and finalizada = 0', (idTandas,))
             else:
                 cur.execute('SELECT * FROM tandas WHERE finalizada = 0')
             rows = cur.fetchall()
@@ -84,8 +137,7 @@ class tandaController:
         try:
             con = lite.connect(self._db)
             cur = con.cursor()
-
-            cur.execute('SELECT tandasalida.idIntegrante, nombre, apellido, pagado FROM tandasalida INNER JOIN integrantes ON tandasalida.idIntegrante = integrantes.idIntegrante WHERE idTandas = ?', (idTanda))
+            cur.execute('SELECT tandasalida.idIntegrante, nombre, apellido, pagado FROM tandasalida INNER JOIN integrantes ON tandasalida.idIntegrante = integrantes.idIntegrante WHERE idTandas = ?', (idTanda,))
             rows = cur.fetchall()
         except lite.Error, e:
             print "Error %s:" % e.args[0]
@@ -104,7 +156,7 @@ class tandaController:
             if idIntegrante is None:
                 cur.execute('SELECT * FROM Integrantes')
             else:
-                cur.execute('SELECT * FROM Integrantes WHERE idIntegrante = ?', (idIntegrante))
+                cur.execute('SELECT * FROM Integrantes WHERE idIntegrante = ?', (idIntegrante,))
             rows = cur.fetchall()
         except lite.Error, e:
             print "Error %s:" % e.args[0]
@@ -120,7 +172,7 @@ class tandaController:
             con = lite.connect(self._db)
             cur = con.cursor()
             if not(idPeriodo is None):
-                cur.execute('SELECT * FROM Periodicidad WHERE idPer = ?', (idPeriodo))
+                cur.execute('SELECT * FROM Periodicidad WHERE idPer = ?', (idPeriodo,))
             else:
                 cur.execute('SELECT * FROM Periodicidad')
             rows = cur.fetchall()
@@ -159,7 +211,7 @@ class tandaController:
             elif not(idIntegrante is None):
                 cur.execute('SELECT * FROM TandaSalida WHERE idIntegrante = ? and pagado = ?', (idIntegrante, 0))
             else:
-                cur.execute('SELECT * FROM TandaSalida WHERE pagado = ?', (0))
+                cur.execute('SELECT * FROM TandaSalida WHERE pagado = ?', (0,))
             rows = cur.fetchall()
         except lite.Error, e:
             print "Error %s:" % e.args[0]
@@ -206,7 +258,7 @@ class tandaController:
         try:
             con = lite.connect(self._db)
             cur = con.cursor()
-            cur.execute('SELECT * FROM Integrantes AS I INNER JOIN tandaEntrada AS T ON I.idIntegrante = T.idIntegrante AND T.idTandas = ? AND T.pos = ?', (idTanda, pos))
+            cur.execute('SELECT * FROM Integrantes AS I INNER JOIN tandaEntrada AS T ON I.idIntegrante = T.idIntegrante AND T.idTandas = ? AND T.pos <= ? AND T.pagado = 0', (idTanda, pos))
             rows = cur.fetchall()
         except lite.Error, e:
             print "Error %s:" % e.args[0]

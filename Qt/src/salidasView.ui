@@ -10,6 +10,18 @@
     <height>388</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>322</width>
+    <height>388</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>322</width>
+    <height>388</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Pagados</string>
   </property>

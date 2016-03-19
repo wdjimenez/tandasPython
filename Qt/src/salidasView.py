@@ -38,7 +38,6 @@ class salidasViewClass(QtGui.QDialog, form_class_salidas):
 
 		self._currentSelected = self._tandas[str(self.comboBoxTandas.currentText())]
 		integrantes = self._tandaControl.recuperarIntegrantesByTandaSalida(self._currentSelected)
-
 		self.actualizarTableWidget(integrantes)
 
 	def actualizarTableWidget(self, integrantesDict):
