@@ -16,8 +16,6 @@ class pagosViewClass(QtGui.QMainWindow, form_class_pagos):
         self.comboBoxTandas.currentIndexChanged.connect(self.mostrarByPeriodo)
         self.calendarWidget.setMinimumDate(QtCore.QDate.currentDate())
         self.calendarWidget.clicked[QtCore.QDate].connect(self.mostrarByPeriodo)
-        # self.dateEdit.setMinimumDate(QtCore.QDate.currentDate())
-        # self.dateEdit.dateChanged.connect(self.mostrarByPeriodo)
 
         self._tandaControl = t.tandaController()
         listaTandas = self._tandaControl.recuperarTandas()
@@ -66,31 +64,30 @@ class pagosViewClass(QtGui.QMainWindow, form_class_pagos):
             rangoFinal = datetime(fs.year(), fs.month(), fs.day())
 
             if fecha >= rangoInicial and fecha <= rangoFinal:
-                self.actualizarTableWidgetByPeriodo(self._currentSelected, n)
+                self.actualizarTableWidgetByPeriodo(self._currentSelected, fechaInf, n, periodoDias)
                 break
-            # print self._fi, self._fs
-            # print n
-            # if not(selFecha >= self._fi and selFecha <= self._fs ):
-                # lv_periodo = n
-                # break            
-        # print lv_periodo
-        # if lv_periodo >= 0:
-        #     self.actualizarTableWidgetByPeriodo(self._currentSelected, lv_periodo)
 
-    def actualizarTableWidgetByPeriodo(self, idTanda, periodo):
+    def actualizarTableWidgetByPeriodo(self, idTanda, fechaIni, periodo, dias):
         self._idIntegrantes = {}
         integrantesDict = self._tandaControl.recuperarIntegrantesByTandaEntrada(idTanda, periodo)
+
         for integrante in integrantesDict:
             row = self.tableWidget.rowCount()
             self._idIntegrantes[row] = str(integrante[0])
             nombre = QtGui.QTableWidgetItem(str(integrante[1]) + " " + str(integrante[2]))
             periodo = QtGui.QTableWidgetItem(str(integrante[6]))
-            # fecha = QtGui.QTableWidgetItem(self._fi.toString("yyyy-MM-dd") + " - " + self._fs.toString("yyyy-MM-dd"))
+
+            fi = fechaIni.addDays(dias * integrante[6] )
+            fs = fechaIni.addDays(dias * ( integrante[6] + 1) )
+
+            fecha = QtGui.QTableWidgetItem(fi.toString("yyyy-MM-dd") + " / " + fs.toString("yyyy-MM-dd"))
+
+            nombre.setFlags(QtCore.Qt.ItemIsEnabled)
+            periodo.setFlags(QtCore.Qt.ItemIsEnabled)
+            fecha.setFlags(QtCore.Qt.ItemIsEnabled)
 
             pWidget = QtGui.QWidget()
             pCheckBox = QtGui.QCheckBox()
-            if str(integrante[7]) == '1':
-                continue
 
             pLayout = QtGui.QHBoxLayout(pWidget)
             pLayout.addWidget(pCheckBox)
@@ -101,8 +98,13 @@ class pagosViewClass(QtGui.QMainWindow, form_class_pagos):
             self.tableWidget.insertRow(row)
             self.tableWidget.setItem(row, 0, nombre)
             self.tableWidget.setItem(row, 1, periodo)
-            # self.tableWidget.setItem(row, 2, fecha)
+            self.tableWidget.setItem(row, 2, fecha)
             self.tableWidget.setCellWidget(row, 3, pWidget)
+
+            self.tableWidget.setColumnWidth(0,170)
+            self.tableWidget.setColumnWidth(1,50)
+            self.tableWidget.setColumnWidth(2,170)
+            self.tableWidget.setColumnWidth(3,40)
 
     def actualizarEntradas(self):
 		listaIntegrantes = []
@@ -114,8 +116,3 @@ class pagosViewClass(QtGui.QMainWindow, form_class_pagos):
 			self._tandaControl.actualizarTandaEntrada(self._currentSelected , listaIntegrantes, self._pos)
 		if self.sender() and self.sender().text() == 'Aceptar':
 			self.close()
-
-# app = QtGui.QApplication(sys.argv)
-# MyWindow = pagosViewClass(None)
-# MyWindow.show()
-# app.exec_()
