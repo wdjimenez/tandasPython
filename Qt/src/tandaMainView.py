@@ -23,7 +23,7 @@ class tandaMainViewClass(QtGui.QMainWindow, form_class_tanda):
 		self.actionSalidas.triggered.connect(self.tandaSalidas)
 		self.actionCerrar.triggered.connect(self.tandaCerrar)
 		self.pic.setPixmap(QtGui.QPixmap("img/22-512.png"))
-		self.setWindowIcon(QtGui.QIcon('img/tanda.ico'))
+		self.setWindowIcon(QtGui.QIcon('img/tanda32x32.ico'))
 		t = controller.tandaController()
 		t.initDB()
 
