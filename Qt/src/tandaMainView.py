@@ -10,7 +10,7 @@ import salidasView as salidas
 import cerrarView as cerrar
 
 # Cargar nuestro archivo .ui
-form_class_tanda = uic.loadUiType("tandaMainView.ui")[0]
+form_class_tanda = uic.loadUiType("forms/tandaMainView.ui")[0]
 
 class tandaMainViewClass(QtGui.QMainWindow, form_class_tanda):
 # class MyWindowClass(QtGui.QDialog, form_class):
@@ -22,7 +22,8 @@ class tandaMainViewClass(QtGui.QMainWindow, form_class_tanda):
 		self.actionEntradas.triggered.connect(self.tandaEntradas)
 		self.actionSalidas.triggered.connect(self.tandaSalidas)
 		self.actionCerrar.triggered.connect(self.tandaCerrar)
-
+		self.pic.setPixmap(QtGui.QPixmap("img/22-512.png"))
+		self.setWindowIcon(QtGui.QIcon('img/tanda.ico'))
 		t = controller.tandaController()
 		t.initDB()
 
@@ -52,8 +53,3 @@ class tandaMainViewClass(QtGui.QMainWindow, form_class_tanda):
 		entWindow = cerrar.cerrarViewClass(self)
 		entWindow.show()
 		entWindow.exec_()
-
-app = QtGui.QApplication(sys.argv)
-MyWindow = tandaMainViewClass(None)
-MyWindow.show()
-app.exec_()

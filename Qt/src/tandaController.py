@@ -4,7 +4,7 @@ import sys
 
 class tandaController:
     """Clase para manipular información de los integrantes"""
-    def __init__(self, db = 'TandaDB.db'):
+    def __init__(self, db = 'src/TandaDB.db'):
         """Se recibe la BD que se va a utilizar"""
         self._db = db
 
@@ -18,8 +18,7 @@ class tandaController:
                     idIntegrante  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
                     nombre    TEXT NOT NULL,
                     apellido  TEXT,
-                    telefono  TEXT,
-                    PRIMARY KEY(idIntegrante)
+                    telefono  TEXT
                 );   
                 CREATE TABLE IF NOT EXISTS TandaEntrada (
                     idTandas  INTEGER NOT NULL,
@@ -39,8 +38,7 @@ class tandaController:
                 CREATE TABLE IF NOT EXISTS Periodicidad (
                     idPer INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
                     tipoPeriodo   TEXT NOT NULL,
-                    cantDias  INTEGER,
-                    PRIMARY KEY(idPer)
+                    cantDias  INTEGER                    
                 );
                 
                 CREATE TABLE IF NOT EXISTS Tandas (
@@ -49,8 +47,7 @@ class tandaController:
                     idPer INTEGER NOT NULL,
                     monto REAL,
                     finalizada    INTEGER,
-                    cantInte  INTEGER,
-                    PRIMARY KEY(idTandas)
+                    cantInte  INTEGER
                 );             
             ''')
 

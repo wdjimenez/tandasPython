@@ -4,7 +4,7 @@ import sys
 from PyQt4 import QtCore, QtGui, uic
 import tandaController as t
 
-form_class_integrantes = uic.loadUiType("integrantesView.ui")[0]
+form_class_integrantes = uic.loadUiType("forms/integrantesView.ui")[0]
 
 class integrantesViewClass(QtGui.QDialog, form_class_integrantes):
 	def __init__(self, parent=None):

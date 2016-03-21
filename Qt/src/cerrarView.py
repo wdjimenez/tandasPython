@@ -4,7 +4,7 @@ import sys
 from PyQt4 import QtCore, QtGui, uic
 import tandaController as t
 
-form_class_salidas = uic.loadUiType("cerrarView.ui")[0]
+form_class_salidas = uic.loadUiType("forms/cerrarView.ui")[0]
 
 class cerrarViewClass(QtGui.QDialog, form_class_salidas):
     def __init__(self, parent=None):

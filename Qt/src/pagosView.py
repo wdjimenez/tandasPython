@@ -5,7 +5,7 @@ from PyQt4 import QtCore, QtGui, uic
 from datetime import datetime
 import tandaController as t
 
-form_class_pagos = uic.loadUiType("pagosView.ui")[0]
+form_class_pagos = uic.loadUiType("forms/pagosView.ui")[0]
 
 class pagosViewClass(QtGui.QMainWindow, form_class_pagos):
     def __init__(self, parent=None):
