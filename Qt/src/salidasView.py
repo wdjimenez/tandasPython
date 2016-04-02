@@ -29,12 +29,12 @@ class salidasViewClass(QtGui.QDialog, form_class_salidas):
 
 
 	def actualizarIntegrantes(self, newIndex):
-		if self._first == 'X':
-			self._first = ''
-		else:
-			reply = QtGui.QMessageBox.question(self, 'Confirmar', '¿Desea guardar los cambios?', QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
-			if reply == QtGui.QMessageBox.Yes:
-				self.actualizarSalidas()
+		#if self._first == 'X':
+		#	self._first = ''
+		#else:
+		#	reply = QtGui.QMessageBox.question(self, 'Confirmar', '¿Desea guardar los cambios?', QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
+		#	if reply == QtGui.QMessageBox.Yes:
+		#		self.actualizarSalidas()
 
 		self._currentSelected = self._tandas[str(self.comboBoxTandas.currentText())]
 		integrantes = self._tandaControl.recuperarIntegrantesByTandaSalida(self._currentSelected)

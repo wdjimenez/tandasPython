@@ -49,7 +49,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Aceptar</string>
+     <string>Guardar</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButtonCancel">
