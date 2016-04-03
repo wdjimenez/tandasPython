@@ -16,7 +16,7 @@ class tandaViewClass(QtGui.QDialog, form_class_integrantes):
         self.pushCancel.clicked.connect(self.close)
 
         # self.dateEdit.setMinimumDate(QtCore.QDate.currentDate());
-        self.calendarWidget.setMinimumDate(QtCore.QDate.currentDate())
+        #self.calendarWidget.setMinimumDate(QtCore.QDate.currentDate())
         self.montoEdit.textChanged.connect(self.validarNumero)
         self.pushCrear.clicked.connect(self.crearTanda)
         self.spinBoxIntegrantes.valueChanged.connect(self.generarIntegrantes)
